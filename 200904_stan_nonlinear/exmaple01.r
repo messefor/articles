@@ -7,16 +7,26 @@ library(tidyverse)
 options(mc.cores = parallel::detectCores())
 rstan_options(auto_write = TRUE)
 
-b0 <- 1.3
-b1 <- 0.5
+set.seed(1234)
+
+a <- 1.7
+b0 <- 0.3
+b1 <- 1.5
+phi <- 10.
+
+
+a <- 0.3
+b0 <- 0.3
+b1 <- 1.5
+phi <- 0.5
+
 
 pop.set <- seq(0, 10, by=0.05)
-N <- 100
+N <- 150
 x <- sample(pop.set, N)
 
-mu <- b0 + b1 * x
+mu <- b0 + b1 * x ^ a
 
-phi <- 2.3
 shape <- mu ^ 2 / phi
 rate <- mu / phi
 
@@ -27,15 +37,17 @@ g <-list(x = x, y = y, mu = mu) %>% data.frame() %>% ggplot()
 g <- g + geom_point(aes(x=x, y=y))
 g <- g + geom_line(aes(x=x, y=mu, color='mu'))
 g <- g + ggtitle('Toy data')
-ggsave('toy_data.png', plot=g)
+g
+ggsave('toy_data_exp.png', plot=g)
 
 
 data <- list(N = N, x = x, y = y)
-fit <- stan(file='200904_stan_nonlinear/example00.stan',
+fit <- stan(file='200904_stan_nonlinear/example01.stan',
               data=data, seed=1234, iter=2000)
+
 # -----------------------------------------------------------
 
-par <- c('b0', 'b1', 'phi')
+par <- c('a', 'b0', 'b1', 'phi')
 
 result.summay <- summary(fit)$summary
 result.summay[par, ]
@@ -68,4 +80,5 @@ g <- g + geom_line(aes(x=x, y=mean, color='post_mean')) +
 g <- g + geom_ribbon(aes(x=x, ymin=p25,ymax=p75), fill="blue", alpha=0.2) +
       geom_ribbon(aes(x=x, ymin=p2.5,ymax=p97.5), fill="blue", alpha=0.2)
 g <- g + ggtitle('True and Predicted') + labs(y='y')
-ggsave('pred.png')
+g
+ggsave('pred_exp.png')
