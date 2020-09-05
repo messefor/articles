@@ -33,7 +33,7 @@ ggsave('toy_data.png', plot=g)
 
 
 data <- list(N = N, x = x, y = y)
-fit <- stan(file='200904_stan_nonlinear/example00.stan',
+fit <- stan(file='example00.stan',
               data=data, seed=1234, iter=2000)
 # -----------------------------------------------------------
 

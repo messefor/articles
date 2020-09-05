@@ -1,29 +1,34 @@
 # Simulate exponential data / gamma distribution with stan
 
 # library(ggplot2)
+# install.packages('latex2exp')
+
 library(rstan)
 library(tidyverse)
+library(latex2exp)
 
 options(mc.cores = parallel::detectCores())
 rstan_options(auto_write = TRUE)
 
-set.seed(1234)
+
 
 a <- 1.7
 b0 <- 0.3
 b1 <- 1.5
 phi <- 10.
 
+set.seed(1234)
 
 a <- 0.3
-b0 <- 0.3
+b0 <- 1.0
 b1 <- 1.5
-phi <- 0.5
+phi <- 0.1
 
 
-pop.set <- seq(0, 10, by=0.05)
+# pop.set <- seq(0, 10, by=0.05)
+# x <- sample(pop.set, N)
 N <- 150
-x <- sample(pop.set, N)
+x <- runif(n=N, 0.1, 20)
 
 mu <- b0 + b1 * x ^ a
 
@@ -36,7 +41,7 @@ y <- rgamma(n = length(x), shape = shape, rate = rate)
 g <-list(x = x, y = y, mu = mu) %>% data.frame() %>% ggplot()
 g <- g + geom_point(aes(x=x, y=y))
 g <- g + geom_line(aes(x=x, y=mu, color='mu'))
-g <- g + ggtitle('Toy data')
+g <- g + ggtitle('Toy data: mu = 0.2 + 1.5 * x ^ 0.3')
 g
 ggsave('toy_data_exp.png', plot=g)
 
@@ -54,9 +59,13 @@ result.summay[par, ]
 
 stan_rhat(fit)
 
-stan_trace(fit)
+png("trace01.png", width = 1200, height = 1200, res = 100)
+stan_trace(fit, par=par)
+dev.off()
 
+png("stan_plot01.png", width = 1200, height = 1200, res = 150)
 stan_plot(fit, par=par, show_density=T)
+dev.off()
 
 
 # -----------------------------------------------------------

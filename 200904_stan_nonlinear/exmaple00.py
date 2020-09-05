@@ -8,29 +8,32 @@ import matplotlib.pyplot as plt
 
 scale = 1.0
 shape = 1.0
-size = 10000
+size = 100000
 
 
 fig, ax = plt.subplots()
-for shape in np.arange(0., 50, 10):
+for shape in np.arange(0., 10, 2):
     if shape > 0:
         data = np.random.gamma(shape=shape, scale=scale, size=size)
         mu = data.mean()
-        label = 'shape={:.1f}, scale={:.1f}, mu={:.1f}'.format(shape, scale, mu)
+        label = 'shape={:.1f}, rate={:.1f}, mu={:.1f}'.format(shape, 1/scale, mu)
         sns.kdeplot(data, ax=ax, label=label)
 ax.legend()
 
 
-shape = 1.0
+shape = 3.0
 fig, ax = plt.subplots()
-for scale in np.arange(20, 50, 10):
+for rate in np.arange(0.1, 1.0, .2):
+    scale = 1 / rate
     data = np.random.gamma(shape=shape, scale=scale, size=size)
     mu = data.mean()
-    label = 'shape={:.1f}, scale={:.1f}, mu={:.1f}'.format(shape, scale, mu)
+    # label = 'shape={:.1f}, rate={:.1f}, mu={:.1f}'.format(shape, 1/scale, mu)
+    label = 'shape={:.1f}, rate={:.2f}'.format(shape, 1/scale)
     sns.kdeplot(data, ax=ax, label=label)
+ax.set(xlim=(0, 20))
 ax.legend()
 
-# --------------------------------------------------------------------
+    # --------------------------------------------------------------------
 # Build toy data
 # --------------------------------------------------------------------
 

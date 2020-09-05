@@ -6,8 +6,9 @@ data {
 
 parameters {
   real<lower=0> phi;  // variance of gamma
-  real<lower=0> b0;
-  real<lower=0> b1;
+  // real<lower=0> b0;
+  real b0;  // what if we don't restrict parameters => It's OK
+  real b1;  // what if we don't restrict parameters => It's OK
 }
 
 transformed parameters {
