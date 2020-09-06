@@ -107,6 +107,7 @@ if __name__ == '__main__':
     # art_nm = '200810_whitenoise_iid.md'
     # art_nm = '200812_ma_invertible.md'
     art_nm = '200814_ar_charac.md'
+    art_nm = '200904_stan_gamma_1.md'
 
     path_art = os.path.join('text', art_nm)
     path_art_cnvd = os.path.join('text', 'new_' + art_nm)
