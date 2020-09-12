@@ -5,6 +5,7 @@ figs/*
 temp/*
 models*/
 jupyter/
+src*/
 
 _bk/
 _reports/
@@ -17,6 +18,9 @@ _docs/
 *.bz2
 *.pkl
 *.zip
+*.xlsx
+*.pptx
+*.tar.gz
 
 *.rds
 *.csv
